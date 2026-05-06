@@ -1,0 +1,1441 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude terrain sur les besoins des professionnelles en produits d'onglerie</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #B8955A;
+    --gold-light: #D4B483;
+    --gold-pale: #F5ECD7;
+    --dark: #1A1410;
+    --dark-mid: #2C2218;
+    --mid: #4A3728;
+    --text: #3D2B1F;
+    --text-light: #7A6050;
+    --bg: #FDFAF5;
+    --bg-card: #FFFDF8;
+    --border: #E8D9C0;
+    --success: #5C8A6E;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 20% 0%, rgba(184,149,90,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(184,149,90,0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-light);
+    padding: 6px 20px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 300;
+    color: var(--dark);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+  }
+
+  .intro-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 4px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+
+  .intro-box p { margin-bottom: 10px; }
+  .intro-box p:last-child { margin-bottom: 0; }
+
+  .intro-meta {
+    font-size: 12px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    background: rgba(253,250,245,0.95);
+    backdrop-filter: blur(8px);
+    padding: 12px 0 16px;
+    z-index: 100;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+  }
+
+  .progress-section-name {
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .progress-bar-bg {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 40px;
+    display: none;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section.active { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .section-num {
+    width: 36px;
+    height: 36px;
+    background: var(--dark);
+    color: var(--gold-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+  }
+
+  /* Question card */
+  .q-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .q-card:hover {
+    border-color: var(--gold-light);
+    box-shadow: 0 2px 16px rgba(184,149,90,0.08);
+  }
+
+  .q-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .q-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .q-hint {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  /* Radio / Checkbox custom */
+  .options-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .opt-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .opt-item:hover { border-color: var(--gold-light); background: var(--gold-pale); }
+
+  .opt-item.selected {
+    border-color: var(--gold);
+    background: rgba(184,149,90,0.07);
+  }
+
+  .opt-item input { display: none; }
+
+  .opt-indicator {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: white;
+  }
+
+  .opt-indicator.radio { border-radius: 50%; }
+  .opt-indicator.check { border-radius: 3px; }
+
+  .opt-item.selected .opt-indicator {
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+
+  .opt-item.selected .opt-indicator::after {
+    content: '';
+    display: block;
+  }
+
+  .opt-indicator.radio.selected-ind::after {
+    width: 7px; height: 7px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  .opt-indicator.check.selected-ind::after {
+    width: 10px; height: 7px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+
+  .opt-text { font-size: 13.5px; color: var(--text); flex: 1; }
+
+  .opt-other-input {
+    display: none;
+    margin-top: 8px;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .opt-other-input:focus { border-color: var(--gold); }
+
+  /* Text inputs */
+  .text-input, .textarea-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .text-input:focus, .textarea-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,149,90,0.1);
+  }
+
+  .textarea-input {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  /* Scale */
+  .scale-wrap { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  .scale-btn {
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .scale-btn:hover { border-color: var(--gold-light); color: var(--gold); }
+  .scale-btn.selected { background: var(--gold); border-color: var(--gold); color: white; }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  /* Navigation */
+  .nav-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn {
+    padding: 13px 32px;
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-prev {
+    background: transparent;
+    color: var(--text-light);
+    border: 1px solid var(--border);
+  }
+
+  .btn-prev:hover {
+    border-color: var(--gold-light);
+    color: var(--text);
+  }
+
+  .btn-next {
+    background: var(--dark);
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  .btn-next:hover {
+    background: var(--mid);
+    transform: translateX(2px);
+  }
+
+  .btn-submit {
+    background: var(--gold);
+    color: white;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  .btn-submit:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(184,149,90,0.3);
+  }
+
+  /* Success screen */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--gold-pale);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 28px;
+  }
+
+  .success-screen h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+
+  .success-screen p {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.7;
+    max-width: 420px;
+    margin: 0 auto 24px;
+  }
+
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: var(--dark);
+    color: var(--gold-light);
+    border-radius: 3px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .download-btn:hover { background: var(--mid); }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Grid for options */
+  .options-grid { display: flex; flex-direction: column; gap: 8px; }
+  @media (min-width: 600px) {
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .options-grid .opt-item { margin: 0; }
+  }
+  .opt-item { pointer-events: auto; cursor: pointer; }
+
+  /* Required star */
+  .required::after { content: ' *'; color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">Executive MBA · Dauphine PSL</div>
+    <h1>Étude terrain sur les besoins des<br>professionnelles en <em>produits d'onglerie</em></h1>
+    <div class="header-line"></div>
+    <div class="intro-box">
+      <p>Bonjour,</p>
+      <p>Dans le cadre d'un projet professionnel Executive MBA portant sur le lancement d'une marque algérienne de produits d'onglerie professionnels, nous réalisons une étude terrain auprès des instituts de beauté, prothésistes ongulaires, salons spécialisés et professionnels du secteur.</p>
+      <p>Ce questionnaire vise à comprendre vos habitudes d'achat, les marques utilisées, les produits les plus consommés, les difficultés d'approvisionnement, les problèmes de qualité et les conditions qui pourraient rendre crédible une marque algérienne professionnelle.</p>
+      <p>Le questionnaire dure environ <strong>7 à 10 minutes</strong>. Les réponses seront utilisées uniquement à des fins d'analyse académique et professionnelle.</p>
+    </div>
+    <div class="intro-meta">Durée estimée : 7-10 min &nbsp;·&nbsp; 43 questions &nbsp;·&nbsp; 9 sections</div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span class="progress-section-name" id="currentSectionName">Section 1 — Profil du professionnel</span>
+      <span id="progressText">Section 1 / 9</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <form id="mainForm" onsubmit="return false;"> <input type="hidden" name="access_key" value="41a6061d-ba7b-4014-9e2c-901bc8097818">
+
+    <!-- SECTION 1 -->
+    <div class="section active" id="section-1">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Profil du professionnel</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q1</span>
+        <label class="q-label required">Vous êtes :</label>
+        <div class="options-list" id="q1">
+          <label class="opt-item" onclick="selectRadio(this,'q1')"><input type="radio" name="q1" value="Institut de beauté"><span class="opt-indicator radio"></span><span class="opt-text">Institut de beauté</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q1')"><input type="radio" name="q1" value="Prothésiste ongulaire indépendante"><span class="opt-indicator radio"></span><span class="opt-text">Prothésiste ongulaire indépendante</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q1')"><input type="radio" name="q1" value="Salon de coiffure avec activité onglerie"><span class="opt-indicator radio"></span><span class="opt-text">Salon de coiffure avec activité onglerie</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q1')"><input type="radio" name="q1" value="Centre de formation"><span class="opt-indicator radio"></span><span class="opt-text">Centre de formation</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q1')"><input type="radio" name="q1" value="Distributeur / revendeur"><span class="opt-indicator radio"></span><span class="opt-text">Distributeur / revendeur</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q1'); toggleOther(this)"><input type="radio" name="q1" value="Autre"><span class="opt-indicator radio"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q1_other">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q2</span>
+        <label class="q-label required">Dans quelle ville exercez-vous ?</label>
+        <input class="text-input" type="text" name="q2" placeholder="Ex : Alger, Oran, Constantine...">
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q3</span>
+        <label class="q-label required">Depuis combien de temps exercez-vous dans l'onglerie ?</label>
+        <div class="options-list" id="q3">
+          <label class="opt-item" onclick="selectRadio(this,'q3')"><input type="radio" name="q3" value="Moins d'un an"><span class="opt-indicator radio"></span><span class="opt-text">Moins d'un an</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q3')"><input type="radio" name="q3" value="1 à 2 ans"><span class="opt-indicator radio"></span><span class="opt-text">1 à 2 ans</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q3')"><input type="radio" name="q3" value="3 à 5 ans"><span class="opt-indicator radio"></span><span class="opt-text">3 à 5 ans</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q3')"><input type="radio" name="q3" value="Plus de 5 ans"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 5 ans</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q4</span>
+        <label class="q-label required">L'onglerie représente pour vous :</label>
+        <div class="options-list" id="q4">
+          <label class="opt-item" onclick="selectRadio(this,'q4')"><input type="radio" name="q4" value="Une activité principale"><span class="opt-indicator radio"></span><span class="opt-text">Une activité principale</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q4')"><input type="radio" name="q4" value="Une activité secondaire importante"><span class="opt-indicator radio"></span><span class="opt-text">Une activité secondaire importante</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q4')"><input type="radio" name="q4" value="Une activité complémentaire"><span class="opt-indicator radio"></span><span class="opt-text">Une activité complémentaire</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q4')"><input type="radio" name="q4" value="Une activité occasionnelle"><span class="opt-indicator radio"></span><span class="opt-text">Une activité occasionnelle</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q5</span>
+        <label class="q-label required">Combien de clientes onglerie recevez-vous en moyenne par mois ?</label>
+        <div class="options-list" id="q5">
+          <label class="opt-item" onclick="selectRadio(this,'q5')"><input type="radio" name="q5" value="Moins de 20"><span class="opt-indicator radio"></span><span class="opt-text">Moins de 20</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q5')"><input type="radio" name="q5" value="20 à 50"><span class="opt-indicator radio"></span><span class="opt-text">20 à 50</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q5')"><input type="radio" name="q5" value="51 à 100"><span class="opt-indicator radio"></span><span class="opt-text">51 à 100</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q5')"><input type="radio" name="q5" value="101 à 150"><span class="opt-indicator radio"></span><span class="opt-text">101 à 150</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q5')"><input type="radio" name="q5" value="Plus de 150"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 150</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section" id="section-2">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">Activité et prestations</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q6</span>
+        <label class="q-label">Quelles prestations d'onglerie proposez-vous ?</label>
+        <p class="q-hint">Plusieurs réponses possibles</p>
+        <div class="options-list options-grid" id="q6">
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Pose gel UV/LED"><span class="opt-indicator check"></span><span class="opt-text">Pose gel UV/LED</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Vernis semi-permanent"><span class="opt-indicator check"></span><span class="opt-text">Vernis semi-permanent</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Base coat / renforcement"><span class="opt-indicator check"></span><span class="opt-text">Base coat / renforcement</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Top coat / finition"><span class="opt-indicator check"></span><span class="opt-text">Top coat / finition</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Dépose"><span class="opt-indicator check"></span><span class="opt-text">Dépose</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Dépose + nouvelle pose"><span class="opt-indicator check"></span><span class="opt-text">Dépose + nouvelle pose</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Remplissage / retouche"><span class="opt-indicator check"></span><span class="opt-text">Remplissage / retouche</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Extension / construction"><span class="opt-indicator check"></span><span class="opt-text">Extension / construction</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Soin des ongles"><span class="opt-indicator check"></span><span class="opt-text">Soin des ongles</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Soin des cuticules"><span class="opt-indicator check"></span><span class="opt-text">Soin des cuticules</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6')"><input type="checkbox" name="q6" value="Nail art"><span class="opt-indicator check"></span><span class="opt-text">Nail art</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q6'); toggleOther(this)"><input type="checkbox" name="q6" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q6_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q7</span>
+        <label class="q-label">Quelles sont les 3 prestations les plus demandées par vos clientes ?</label>
+        <p class="q-hint">Maximum 3 réponses</p>
+        <div class="options-list" id="q7" data-max="3">
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Pose gel UV/LED"><span class="opt-indicator check"></span><span class="opt-text">Pose gel UV/LED</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Vernis semi-permanent"><span class="opt-indicator check"></span><span class="opt-text">Vernis semi-permanent</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Mains seules"><span class="opt-indicator check"></span><span class="opt-text">Mains seules</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Mains + pieds"><span class="opt-indicator check"></span><span class="opt-text">Mains + pieds</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Dépose + nouvelle pose"><span class="opt-indicator check"></span><span class="opt-text">Dépose + nouvelle pose</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Remplissage / retouche"><span class="opt-indicator check"></span><span class="opt-text">Remplissage / retouche</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Soin des ongles / cuticules"><span class="opt-indicator check"></span><span class="opt-text">Soin des ongles / cuticules</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7')"><input type="checkbox" name="q7" value="Nail art"><span class="opt-indicator check"></span><span class="opt-text">Nail art</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q7'); toggleOther(this)"><input type="checkbox" name="q7" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q7_other">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q8</span>
+        <label class="q-label">Quel est votre panier moyen par cliente pour une prestation onglerie ?</label>
+        <div class="options-list" id="q8">
+          <label class="opt-item" onclick="selectRadio(this,'q8')"><input type="radio" name="q8" value="Moins de 2 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Moins de 2 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q8')"><input type="radio" name="q8" value="2 000 à 3 500 DA"><span class="opt-indicator radio"></span><span class="opt-text">2 000 à 3 500 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q8')"><input type="radio" name="q8" value="3 501 à 5 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">3 501 à 5 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q8')"><input type="radio" name="q8" value="5 001 à 7 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">5 001 à 7 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q8')"><input type="radio" name="q8" value="Plus de 7 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 7 000 DA</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section" id="section-3">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">Produits consommés et budget</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q9</span>
+        <label class="q-label">Quels produits d'onglerie utilisez-vous régulièrement ?</label>
+        <p class="q-hint">Plusieurs réponses possibles</p>
+        <div class="options-list options-grid" id="q9">
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Gel de construction UV/LED"><span class="opt-indicator check"></span><span class="opt-text">Gel de construction UV/LED</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Base coat"><span class="opt-indicator check"></span><span class="opt-text">Base coat</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Top coat brillant"><span class="opt-indicator check"></span><span class="opt-text">Top coat brillant</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Top coat mat"><span class="opt-indicator check"></span><span class="opt-text">Top coat mat</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Primer"><span class="opt-indicator check"></span><span class="opt-text">Primer</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Cleaner / dégraissant"><span class="opt-indicator check"></span><span class="opt-text">Cleaner / dégraissant</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Remover / dissolvant"><span class="opt-indicator check"></span><span class="opt-text">Remover / dissolvant</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Vernis semi-permanent"><span class="opt-indicator check"></span><span class="opt-text">Vernis semi-permanent</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Huile cuticule"><span class="opt-indicator check"></span><span class="opt-text">Huile cuticule</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Soin des ongles"><span class="opt-indicator check"></span><span class="opt-text">Soin des ongles</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Capsules / chablons"><span class="opt-indicator check"></span><span class="opt-text">Capsules / chablons</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9')"><input type="checkbox" name="q9" value="Limes / accessoires"><span class="opt-indicator check"></span><span class="opt-text">Limes / accessoires</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q9'); toggleOther(this)"><input type="checkbox" name="q9" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q9_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q10</span>
+        <label class="q-label">Quels sont les 3 produits que vous consommez le plus ?</label>
+        <input class="text-input" type="text" name="q10" placeholder="Ex : gel UV, base coat, top coat...">
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q11</span>
+        <label class="q-label">À quelle fréquence rachetez-vous vos produits principaux ?</label>
+        <div class="options-list" id="q11">
+          <label class="opt-item" onclick="selectRadio(this,'q11')"><input type="radio" name="q11" value="Chaque semaine"><span class="opt-indicator radio"></span><span class="opt-text">Chaque semaine</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q11')"><input type="radio" name="q11" value="Deux fois par mois"><span class="opt-indicator radio"></span><span class="opt-text">Deux fois par mois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q11')"><input type="radio" name="q11" value="Une fois par mois"><span class="opt-indicator radio"></span><span class="opt-text">Une fois par mois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q11')"><input type="radio" name="q11" value="Tous les deux mois"><span class="opt-indicator radio"></span><span class="opt-text">Tous les deux mois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q11')"><input type="radio" name="q11" value="Moins souvent"><span class="opt-indicator radio"></span><span class="opt-text">Moins souvent</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q12</span>
+        <label class="q-label">Quel est votre budget mensuel moyen pour l'achat de produits d'onglerie ?</label>
+        <div class="options-list" id="q12">
+          <label class="opt-item" onclick="selectRadio(this,'q12')"><input type="radio" name="q12" value="Moins de 10 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Moins de 10 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q12')"><input type="radio" name="q12" value="10 000 à 30 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">10 000 à 30 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q12')"><input type="radio" name="q12" value="30 001 à 60 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">30 001 à 60 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q12')"><input type="radio" name="q12" value="60 001 à 100 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">60 001 à 100 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q12')"><input type="radio" name="q12" value="100 001 à 150 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">100 001 à 150 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q12')"><input type="radio" name="q12" value="Plus de 150 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 150 000 DA</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q13</span>
+        <label class="q-label">Votre budget d'achat de produits d'onglerie a-t-il augmenté ces deux dernières années ?</label>
+        <div class="options-list" id="q13">
+          <label class="opt-item" onclick="selectRadio(this,'q13')"><input type="radio" name="q13" value="Oui, fortement"><span class="opt-indicator radio"></span><span class="opt-text">Oui, fortement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q13')"><input type="radio" name="q13" value="Oui, légèrement"><span class="opt-indicator radio"></span><span class="opt-text">Oui, légèrement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q13')"><input type="radio" name="q13" value="Non, il est stable"><span class="opt-indicator radio"></span><span class="opt-text">Non, il est stable</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q13')"><input type="radio" name="q13" value="Non, il a diminué"><span class="opt-indicator radio"></span><span class="opt-text">Non, il a diminué</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q13')"><input type="radio" name="q13" value="Je ne sais pas"><span class="opt-indicator radio"></span><span class="opt-text">Je ne sais pas</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q14</span>
+        <label class="q-label">Si votre budget a augmenté, quelle est la raison principale ?</label>
+        <div class="options-list" id="q14">
+          <label class="opt-item" onclick="selectRadio(this,'q14')"><input type="radio" name="q14" value="Hausse des prix"><span class="opt-indicator radio"></span><span class="opt-text">Hausse des prix</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q14')"><input type="radio" name="q14" value="Produits plus difficiles à trouver"><span class="opt-indicator radio"></span><span class="opt-text">Produits plus difficiles à trouver</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q14')"><input type="radio" name="q14" value="Passage à des marques plus chères"><span class="opt-indicator radio"></span><span class="opt-text">Passage à des marques plus chères</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q14')"><input type="radio" name="q14" value="Augmentation du nombre de clientes"><span class="opt-indicator radio"></span><span class="opt-text">Augmentation du nombre de clientes</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q14')"><input type="radio" name="q14" value="Qualité variable obligeant à changer de produits"><span class="opt-indicator radio"></span><span class="opt-text">Qualité variable, changement de produits</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q14')"><input type="radio" name="q14" value="Non concerné"><span class="opt-indicator radio"></span><span class="opt-text">Non concerné</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q14'); toggleOther(this)"><input type="radio" name="q14" value="Autre"><span class="opt-indicator radio"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q14_other">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section" id="section-4">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">Marques et circuits d'achat</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q15</span>
+        <label class="q-label">Quelles marques utilisez-vous actuellement ?</label>
+        <input class="text-input" type="text" name="q15" placeholder="Ex : Gelish, OPI, Opi, ABC...">
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q16</span>
+        <label class="q-label">Parmi les marques que vous utilisez, lesquelles vous semblent les plus fiables ?</label>
+        <input class="text-input" type="text" name="q16" placeholder="Citez les marques les plus fiables selon vous">
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q17</span>
+        <label class="q-label">Où achetez-vous principalement vos produits d'onglerie ?</label>
+        <p class="q-hint">Plusieurs réponses possibles</p>
+        <div class="options-list options-grid" id="q17">
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Boutiques spécialisées"><span class="opt-indicator check"></span><span class="opt-text">Boutiques spécialisées</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Grossistes"><span class="opt-indicator check"></span><span class="opt-text">Grossistes</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Importateurs"><span class="opt-indicator check"></span><span class="opt-text">Importateurs</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Revendeurs sur réseaux sociaux"><span class="opt-indicator check"></span><span class="opt-text">Revendeurs sur réseaux sociaux</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Sites internet"><span class="opt-indicator check"></span><span class="opt-text">Sites internet</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Salons professionnels"><span class="opt-indicator check"></span><span class="opt-text">Salons professionnels</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Fournisseurs étrangers"><span class="opt-indicator check"></span><span class="opt-text">Fournisseurs étrangers</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17')"><input type="checkbox" name="q17" value="Marché informel"><span class="opt-indicator check"></span><span class="opt-text">Marché informel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q17'); toggleOther(this)"><input type="checkbox" name="q17" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q17_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q18</span>
+        <label class="q-label">Votre source d'approvisionnement est-elle stable ?</label>
+        <div class="options-list" id="q18">
+          <label class="opt-item" onclick="selectRadio(this,'q18')"><input type="radio" name="q18" value="Très stable"><span class="opt-indicator radio"></span><span class="opt-text">Très stable</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q18')"><input type="radio" name="q18" value="Plutôt stable"><span class="opt-indicator radio"></span><span class="opt-text">Plutôt stable</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q18')"><input type="radio" name="q18" value="Moyennement stable"><span class="opt-indicator radio"></span><span class="opt-text">Moyennement stable</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q18')"><input type="radio" name="q18" value="Peu stable"><span class="opt-indicator radio"></span><span class="opt-text">Peu stable</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q18')"><input type="radio" name="q18" value="Pas stable du tout"><span class="opt-indicator radio"></span><span class="opt-text">Pas stable du tout</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q19</span>
+        <label class="q-label">Avez-vous déjà été obligée de changer de marque ou de fournisseur à cause d'une indisponibilité ?</label>
+        <div class="options-list" id="q19">
+          <label class="opt-item" onclick="selectRadio(this,'q19')"><input type="radio" name="q19" value="Oui, souvent"><span class="opt-indicator radio"></span><span class="opt-text">Oui, souvent</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q19')"><input type="radio" name="q19" value="Oui, parfois"><span class="opt-indicator radio"></span><span class="opt-text">Oui, parfois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q19')"><input type="radio" name="q19" value="Rarement"><span class="opt-indicator radio"></span><span class="opt-text">Rarement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q19')"><input type="radio" name="q19" value="Jamais"><span class="opt-indicator radio"></span><span class="opt-text">Jamais</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section" id="section-5">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div class="section-title">Ruptures et problèmes qualité</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q20</span>
+        <label class="q-label">Avez-vous déjà rencontré des ruptures ou difficultés d'approvisionnement sur des produits d'onglerie ?</label>
+        <div class="options-list" id="q20">
+          <label class="opt-item" onclick="selectRadio(this,'q20')"><input type="radio" name="q20" value="Oui, très souvent"><span class="opt-indicator radio"></span><span class="opt-text">Oui, très souvent</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q20')"><input type="radio" name="q20" value="Oui, parfois"><span class="opt-indicator radio"></span><span class="opt-text">Oui, parfois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q20')"><input type="radio" name="q20" value="Rarement"><span class="opt-indicator radio"></span><span class="opt-text">Rarement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q20')"><input type="radio" name="q20" value="Jamais"><span class="opt-indicator radio"></span><span class="opt-text">Jamais</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q21</span>
+        <label class="q-label">Quels produits sont les plus souvent en rupture ou difficiles à trouver ?</label>
+        <p class="q-hint">Maximum 3 réponses</p>
+        <div class="options-list options-grid" id="q21" data-max="3">
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Gel UV/LED"><span class="opt-indicator check"></span><span class="opt-text">Gel UV/LED</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Base coat"><span class="opt-indicator check"></span><span class="opt-text">Base coat</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Top coat"><span class="opt-indicator check"></span><span class="opt-text">Top coat</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Primer"><span class="opt-indicator check"></span><span class="opt-text">Primer</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Cleaner"><span class="opt-indicator check"></span><span class="opt-text">Cleaner</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Remover"><span class="opt-indicator check"></span><span class="opt-text">Remover</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Vernis semi-permanent"><span class="opt-indicator check"></span><span class="opt-text">Vernis semi-permanent</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Huile cuticule"><span class="opt-indicator check"></span><span class="opt-text">Huile cuticule</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21')"><input type="checkbox" name="q21" value="Accessoires"><span class="opt-indicator check"></span><span class="opt-text">Accessoires</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q21'); toggleOther(this)"><input type="checkbox" name="q21" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q21_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q22</span>
+        <label class="q-label">Avez-vous déjà rencontré des problèmes de qualité avec des produits d'onglerie ?</label>
+        <div class="options-list" id="q22">
+          <label class="opt-item" onclick="selectRadio(this,'q22')"><input type="radio" name="q22" value="Oui, très souvent"><span class="opt-indicator radio"></span><span class="opt-text">Oui, très souvent</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q22')"><input type="radio" name="q22" value="Oui, parfois"><span class="opt-indicator radio"></span><span class="opt-text">Oui, parfois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q22')"><input type="radio" name="q22" value="Rarement"><span class="opt-indicator radio"></span><span class="opt-text">Rarement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q22')"><input type="radio" name="q22" value="Jamais"><span class="opt-indicator radio"></span><span class="opt-text">Jamais</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q23</span>
+        <label class="q-label">Quels problèmes de qualité avez-vous déjà constatés ?</label>
+        <p class="q-hint">Plusieurs réponses possibles</p>
+        <div class="options-list options-grid" id="q23">
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Décollement"><span class="opt-indicator check"></span><span class="opt-text">Décollement</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Casse"><span class="opt-indicator check"></span><span class="opt-text">Casse</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Mauvaise tenue"><span class="opt-indicator check"></span><span class="opt-text">Mauvaise tenue</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Perte de brillance"><span class="opt-indicator check"></span><span class="opt-text">Perte de brillance</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Texture difficile à travailler"><span class="opt-indicator check"></span><span class="opt-text">Texture difficile à travailler</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Mauvais séchage sous lampe UV/LED"><span class="opt-indicator check"></span><span class="opt-text">Mauvais séchage UV/LED</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Odeur forte"><span class="opt-indicator check"></span><span class="opt-text">Odeur forte</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Réaction cliente / inconfort"><span class="opt-indicator check"></span><span class="opt-text">Réaction cliente / inconfort</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Différence qualité entre achats"><span class="opt-indicator check"></span><span class="opt-text">Qualité variable entre achats</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23')"><input type="checkbox" name="q23" value="Produit contrefait ou douteux"><span class="opt-indicator check"></span><span class="opt-text">Produit contrefait ou douteux</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q23'); toggleOther(this)"><input type="checkbox" name="q23" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q23_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q24</span>
+        <label class="q-label">Quand un produit est de mauvaise qualité, quelles sont les conséquences pour votre activité ?</label>
+        <p class="q-hint">Plusieurs réponses possibles</p>
+        <div class="options-list options-grid" id="q24">
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Cliente insatisfaite"><span class="opt-indicator check"></span><span class="opt-text">Cliente insatisfaite</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Reprise gratuite de la pose"><span class="opt-indicator check"></span><span class="opt-text">Reprise gratuite de la pose</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Perte de temps"><span class="opt-indicator check"></span><span class="opt-text">Perte de temps</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Perte financière"><span class="opt-indicator check"></span><span class="opt-text">Perte financière</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Perte de confiance dans le fournisseur"><span class="opt-indicator check"></span><span class="opt-text">Perte de confiance fournisseur</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Changement forcé de marque"><span class="opt-indicator check"></span><span class="opt-text">Changement forcé de marque</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Mauvais avis / image affectée"><span class="opt-indicator check"></span><span class="opt-text">Mauvais avis / image affectée</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24')"><input type="checkbox" name="q24" value="Aucune conséquence importante"><span class="opt-indicator check"></span><span class="opt-text">Aucune conséquence importante</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q24'); toggleOther(this)"><input type="checkbox" name="q24" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q24_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q25</span>
+        <label class="q-label">Vous arrive-t-il de refaire gratuitement une pose à cause d'un problème produit ?</label>
+        <div class="options-list" id="q25">
+          <label class="opt-item" onclick="selectRadio(this,'q25')"><input type="radio" name="q25" value="Oui, souvent"><span class="opt-indicator radio"></span><span class="opt-text">Oui, souvent</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q25')"><input type="radio" name="q25" value="Oui, parfois"><span class="opt-indicator radio"></span><span class="opt-text">Oui, parfois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q25')"><input type="radio" name="q25" value="Rarement"><span class="opt-indicator radio"></span><span class="opt-text">Rarement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q25')"><input type="radio" name="q25" value="Jamais"><span class="opt-indicator radio"></span><span class="opt-text">Jamais</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q26</span>
+        <label class="q-label">Si oui, combien de reprises gratuites faites-vous environ par mois ?</label>
+        <div class="options-list" id="q26">
+          <label class="opt-item" onclick="selectRadio(this,'q26')"><input type="radio" name="q26" value="1 à 2"><span class="opt-indicator radio"></span><span class="opt-text">1 à 2</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q26')"><input type="radio" name="q26" value="3 à 5"><span class="opt-indicator radio"></span><span class="opt-text">3 à 5</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q26')"><input type="radio" name="q26" value="6 à 10"><span class="opt-indicator radio"></span><span class="opt-text">6 à 10</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q26')"><input type="radio" name="q26" value="Plus de 10"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 10</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q26')"><input type="radio" name="q26" value="Non concerné"><span class="opt-indicator radio"></span><span class="opt-text">Non concerné</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section" id="section-6">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div class="section-title">Critères de choix d'une marque</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q27</span>
+        <label class="q-label">Quand vous choisissez une marque d'onglerie, quels sont les critères les plus importants ?</label>
+        <p class="q-hint">Maximum 5 réponses</p>
+        <div class="options-list options-grid" id="q27" data-max="5">
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Qualité / tenue"><span class="opt-indicator check"></span><span class="opt-text">Qualité / tenue</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Prix"><span class="opt-indicator check"></span><span class="opt-text">Prix</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Disponibilité régulière"><span class="opt-indicator check"></span><span class="opt-text">Disponibilité régulière</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Marque connue"><span class="opt-indicator check"></span><span class="opt-text">Marque connue</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Origine du produit"><span class="opt-indicator check"></span><span class="opt-text">Origine du produit</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Recommandation de professionnelles"><span class="opt-indicator check"></span><span class="opt-text">Recommandation de professionnelles</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Packaging"><span class="opt-indicator check"></span><span class="opt-text">Packaging</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Conformité / sécurité"><span class="opt-indicator check"></span><span class="opt-text">Conformité / sécurité</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Marge possible"><span class="opt-indicator check"></span><span class="opt-text">Marge possible (revendeurs)</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27')"><input type="checkbox" name="q27" value="Service fournisseur"><span class="opt-indicator check"></span><span class="opt-text">Service fournisseur</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q27'); toggleOther(this)"><input type="checkbox" name="q27" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q27_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q28</span>
+        <label class="q-label">Sur une échelle de 1 à 5, quelle importance accordez-vous à la <strong>qualité constante</strong> d'un produit ?</label>
+        <div class="scale-wrap" id="q28">
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q28','1')">1</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q28','2')">2</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q28','3')">3</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q28','4')">4</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q28','5')">5</button>
+        </div>
+        <div class="scale-labels"><span>Pas importante</span><span>Très importante</span></div>
+        <input type="hidden" name="q28" id="q28_val">
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q29</span>
+        <label class="q-label">Sur une échelle de 1 à 5, quelle importance accordez-vous à la <strong>disponibilité régulière</strong> du produit ?</label>
+        <div class="scale-wrap" id="q29">
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q29','1')">1</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q29','2')">2</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q29','3')">3</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q29','4')">4</button>
+          <button type="button" class="scale-btn" onclick="selectScale(this,'q29','5')">5</button>
+        </div>
+        <div class="scale-labels"><span>Pas importante</span><span>Très importante</span></div>
+        <input type="hidden" name="q29" id="q29_val">
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q30</span>
+        <label class="q-label">Vos clientes remarquent-elles ou demandent-elles parfois les marques ou la qualité des produits utilisés ?</label>
+        <div class="options-list" id="q30">
+          <label class="opt-item" onclick="selectRadio(this,'q30')"><input type="radio" name="q30" value="Oui, souvent"><span class="opt-indicator radio"></span><span class="opt-text">Oui, souvent</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q30')"><input type="radio" name="q30" value="Oui, parfois"><span class="opt-indicator radio"></span><span class="opt-text">Oui, parfois</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q30')"><input type="radio" name="q30" value="Rarement"><span class="opt-indicator radio"></span><span class="opt-text">Rarement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q30')"><input type="radio" name="q30" value="Jamais"><span class="opt-indicator radio"></span><span class="opt-text">Jamais</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q30')"><input type="radio" name="q30" value="Elles ne demandent pas une marque précise mais un produit de qualité"><span class="opt-indicator radio"></span><span class="opt-text">Elles ne demandent pas une marque précise, mais demandent de la qualité</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section" id="section-7">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div class="section-title">Acceptation d'une marque algérienne</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q31</span>
+        <label class="q-label required">Seriez-vous prête à tester une marque algérienne de produits d'onglerie professionnels ?</label>
+        <div class="options-list" id="q31">
+          <label class="opt-item" onclick="selectRadio(this,'q31')"><input type="radio" name="q31" value="Oui, certainement"><span class="opt-indicator radio"></span><span class="opt-text">Oui, certainement</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q31')"><input type="radio" name="q31" value="Oui, si la qualité est prouvée"><span class="opt-indicator radio"></span><span class="opt-text">Oui, si la qualité est prouvée</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q31')"><input type="radio" name="q31" value="Oui, si le prix est compétitif"><span class="opt-indicator radio"></span><span class="opt-text">Oui, si le prix est compétitif</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q31')"><input type="radio" name="q31" value="Oui, si recommandée par des professionnelles"><span class="opt-indicator radio"></span><span class="opt-text">Oui, si recommandée par des professionnelles</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q31')"><input type="radio" name="q31" value="Peut-être"><span class="opt-indicator radio"></span><span class="opt-text">Peut-être</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q31')"><input type="radio" name="q31" value="Non"><span class="opt-indicator radio"></span><span class="opt-text">Non</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q32</span>
+        <label class="q-label">Quelles conditions seraient nécessaires pour faire confiance à une marque algérienne ?</label>
+        <p class="q-hint">Maximum 5 réponses</p>
+        <div class="options-list options-grid" id="q32" data-max="5">
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Tests produits concluants"><span class="opt-indicator check"></span><span class="opt-text">Tests produits concluants</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Bonne tenue sur les clientes"><span class="opt-indicator check"></span><span class="opt-text">Bonne tenue sur les clientes</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Prix raisonnable"><span class="opt-indicator check"></span><span class="opt-text">Prix raisonnable</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Disponibilité régulière"><span class="opt-indicator check"></span><span class="opt-text">Disponibilité régulière</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Packaging professionnel"><span class="opt-indicator check"></span><span class="opt-text">Packaging professionnel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Composition claire"><span class="opt-indicator check"></span><span class="opt-text">Composition claire</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Conformité réglementaire"><span class="opt-indicator check"></span><span class="opt-text">Conformité réglementaire</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Recommandation par des instituts connus"><span class="opt-indicator check"></span><span class="opt-text">Recommandation d'instituts connus</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Démonstration ou formation"><span class="opt-indicator check"></span><span class="opt-text">Démonstration ou formation</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Possibilité d'échantillons"><span class="opt-indicator check"></span><span class="opt-text">Possibilité d'échantillons</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Service après-vente / écoute client"><span class="opt-indicator check"></span><span class="opt-text">Service après-vente</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32')"><input type="checkbox" name="q32" value="Marque visible sur les réseaux sociaux"><span class="opt-indicator check"></span><span class="opt-text">Présence sur les réseaux sociaux</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q32'); toggleOther(this)"><input type="checkbox" name="q32" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q32_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q33</span>
+        <label class="q-label">Qu'est-ce qui pourrait vous freiner à acheter une marque algérienne ?</label>
+        <p class="q-hint">Maximum 4 réponses</p>
+        <div class="options-list options-grid" id="q33" data-max="4">
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Peur d'une qualité insuffisante"><span class="opt-indicator check"></span><span class="opt-text">Peur d'une qualité insuffisante</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Manque de confiance"><span class="opt-indicator check"></span><span class="opt-text">Manque de confiance</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Manque de notoriété"><span class="opt-indicator check"></span><span class="opt-text">Manque de notoriété</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Manque de preuves de conformité"><span class="opt-indicator check"></span><span class="opt-text">Manque de preuves de conformité</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Packaging peu professionnel"><span class="opt-indicator check"></span><span class="opt-text">Packaging peu professionnel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Prix trop élevé"><span class="opt-indicator check"></span><span class="opt-text">Prix trop élevé</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Habitude avec les marques actuelles"><span class="opt-indicator check"></span><span class="opt-text">Habitude avec les marques actuelles</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Peur de réactions clientes"><span class="opt-indicator check"></span><span class="opt-text">Peur de réactions clientes</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33')"><input type="checkbox" name="q33" value="Mauvaise expérience avec des produits locaux"><span class="opt-indicator check"></span><span class="opt-text">Mauvaise exp. avec produits locaux</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q33'); toggleOther(this)"><input type="checkbox" name="q33" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q33_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q34</span>
+        <label class="q-label">Pour vous, une marque d'onglerie doit-elle être importante surtout pour :</label>
+        <div class="options-list" id="q34">
+          <label class="opt-item" onclick="selectRadio(this,'q34')"><input type="radio" name="q34" value="Le professionnel"><span class="opt-indicator radio"></span><span class="opt-text">Le professionnel</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q34')"><input type="radio" name="q34" value="La cliente finale"><span class="opt-indicator radio"></span><span class="opt-text">La cliente finale</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q34')"><input type="radio" name="q34" value="Les deux"><span class="opt-indicator radio"></span><span class="opt-text">Les deux</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q34')"><input type="radio" name="q34" value="Je ne sais pas"><span class="opt-indicator radio"></span><span class="opt-text">Je ne sais pas</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section" id="section-8">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <div class="section-title">Prix, gamme initiale et distribution</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q35</span>
+        <label class="q-label">Aujourd'hui, combien payez-vous environ un gel UV/LED professionnel, pot d'environ 60 ml ?</label>
+        <div class="options-list" id="q35">
+          <label class="opt-item" onclick="selectRadio(this,'q35')"><input type="radio" name="q35" value="Moins de 3 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Moins de 3 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q35')"><input type="radio" name="q35" value="3 000 à 5 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">3 000 à 5 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q35')"><input type="radio" name="q35" value="5 001 à 8 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">5 001 à 8 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q35')"><input type="radio" name="q35" value="8 001 à 10 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">8 001 à 10 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q35')"><input type="radio" name="q35" value="Plus de 10 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 10 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q35')"><input type="radio" name="q35" value="Je ne sais pas"><span class="opt-indicator radio"></span><span class="opt-text">Je ne sais pas</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q36</span>
+        <label class="q-label">Quel prix vous semblerait acceptable pour un gel UV/LED algérien professionnel de bonne qualité, pot d'environ 60 ml ?</label>
+        <div class="options-list" id="q36">
+          <label class="opt-item" onclick="selectRadio(this,'q36')"><input type="radio" name="q36" value="Moins de 3 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Moins de 3 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q36')"><input type="radio" name="q36" value="3 000 à 5 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">3 000 à 5 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q36')"><input type="radio" name="q36" value="5 001 à 7 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">5 001 à 7 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q36')"><input type="radio" name="q36" value="7 001 à 9 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">7 001 à 9 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q36')"><input type="radio" name="q36" value="Plus de 9 000 DA"><span class="opt-indicator radio"></span><span class="opt-text">Plus de 9 000 DA</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q36')"><input type="radio" name="q36" value="Je ne sais pas"><span class="opt-indicator radio"></span><span class="opt-text">Je ne sais pas</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q37</span>
+        <label class="q-label">Si une marque algérienne professionnelle était lancée, quels produits devraient être proposés en priorité ?</label>
+        <p class="q-hint">Maximum 5 réponses</p>
+        <div class="options-list options-grid" id="q37" data-max="5">
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Gel UV/LED clear"><span class="opt-indicator check"></span><span class="opt-text">Gel UV/LED clear</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Gel UV/LED nude / rose naturel"><span class="opt-indicator check"></span><span class="opt-text">Gel UV/LED nude / rose naturel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Gel UV/LED couleur"><span class="opt-indicator check"></span><span class="opt-text">Gel UV/LED couleur</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Base coat"><span class="opt-indicator check"></span><span class="opt-text">Base coat</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Top coat brillant"><span class="opt-indicator check"></span><span class="opt-text">Top coat brillant</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Top coat mat"><span class="opt-indicator check"></span><span class="opt-text">Top coat mat</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Primer"><span class="opt-indicator check"></span><span class="opt-text">Primer</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Cleaner"><span class="opt-indicator check"></span><span class="opt-text">Cleaner</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Remover"><span class="opt-indicator check"></span><span class="opt-text">Remover</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Vernis semi-permanent"><span class="opt-indicator check"></span><span class="opt-text">Vernis semi-permanent</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Huile cuticule"><span class="opt-indicator check"></span><span class="opt-text">Huile cuticule</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Soin des ongles"><span class="opt-indicator check"></span><span class="opt-text">Soin des ongles</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37')"><input type="checkbox" name="q37" value="Accessoires"><span class="opt-indicator check"></span><span class="opt-text">Accessoires</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q37'); toggleOther(this)"><input type="checkbox" name="q37" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q37_other" style="grid-column:1/-1">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q38</span>
+        <label class="q-label">Quel produit vous donnerait le plus envie de tester la marque en premier ?</label>
+        <div class="options-list" id="q38">
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Gel UV/LED"><span class="opt-indicator radio"></span><span class="opt-text">Gel UV/LED</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Base coat"><span class="opt-indicator radio"></span><span class="opt-text">Base coat</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Top coat"><span class="opt-indicator radio"></span><span class="opt-text">Top coat</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Primer"><span class="opt-indicator radio"></span><span class="opt-text">Primer</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Cleaner"><span class="opt-indicator radio"></span><span class="opt-text">Cleaner</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Remover"><span class="opt-indicator radio"></span><span class="opt-text">Remover</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Vernis semi-permanent"><span class="opt-indicator radio"></span><span class="opt-text">Vernis semi-permanent</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38')"><input type="radio" name="q38" value="Huile cuticule"><span class="opt-indicator radio"></span><span class="opt-text">Huile cuticule</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q38'); toggleOther(this)"><input type="radio" name="q38" value="Autre"><span class="opt-indicator radio"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q38_other">
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q39</span>
+        <label class="q-label">Préféreriez-vous acheter :</label>
+        <div class="options-list" id="q39">
+          <label class="opt-item" onclick="selectRadio(this,'q39')"><input type="radio" name="q39" value="Produit à l'unité"><span class="opt-indicator radio"></span><span class="opt-text">Produit à l'unité</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q39')"><input type="radio" name="q39" value="Pack découverte"><span class="opt-indicator radio"></span><span class="opt-text">Pack découverte</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q39')"><input type="radio" name="q39" value="Pack professionnel complet"><span class="opt-indicator radio"></span><span class="opt-text">Pack professionnel complet</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q39')"><input type="radio" name="q39" value="Pack gel + base + top"><span class="opt-indicator radio"></span><span class="opt-text">Pack gel + base + top</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q39')"><input type="radio" name="q39" value="Je ne sais pas"><span class="opt-indicator radio"></span><span class="opt-text">Je ne sais pas</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q40</span>
+        <label class="q-label">Où préféreriez-vous acheter une marque algérienne professionnelle ?</label>
+        <p class="q-hint">Maximum 3 réponses</p>
+        <div class="options-list options-grid" id="q40" data-max="3">
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Boutique spécialisée"><span class="opt-indicator check"></span><span class="opt-text">Boutique spécialisée</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Site internet officiel"><span class="opt-indicator check"></span><span class="opt-text">Site internet officiel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Distributeur professionnel"><span class="opt-indicator check"></span><span class="opt-text">Distributeur professionnel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Réseaux sociaux"><span class="opt-indicator check"></span><span class="opt-text">Réseaux sociaux</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Représentant commercial"><span class="opt-indicator check"></span><span class="opt-text">Représentant commercial</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Salon professionnel"><span class="opt-indicator check"></span><span class="opt-text">Salon professionnel</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40')"><input type="checkbox" name="q40" value="Centre de formation"><span class="opt-indicator check"></span><span class="opt-text">Centre de formation</span></label>
+          <label class="opt-item" onclick="selectCheck(this,'q40'); toggleOther(this)"><input type="checkbox" name="q40" value="Autre"><span class="opt-indicator check"></span><span class="opt-text">Autre</span></label>
+          <input class="opt-other-input" type="text" placeholder="Précisez..." id="q40_other" style="grid-column:1/-1">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="section" id="section-9">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <div class="section-title">Question finale et contact</div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q41</span>
+        <label class="q-label">Selon vous, qu'est-ce qu'une marque algérienne de produits d'onglerie doit absolument réussir pour être crédible auprès des professionnelles ?</label>
+        <textarea class="textarea-input" name="q41" placeholder="Partagez librement votre point de vue..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q42</span>
+        <label class="q-label">Accepteriez-vous d'être recontactée pour un entretien plus approfondi ?</label>
+        <div class="options-list" id="q42">
+          <label class="opt-item" onclick="selectRadio(this,'q42')"><input type="radio" name="q42" value="Oui"><span class="opt-indicator radio"></span><span class="opt-text">Oui</span></label>
+          <label class="opt-item" onclick="selectRadio(this,'q42')"><input type="radio" name="q42" value="Non"><span class="opt-indicator radio"></span><span class="opt-text">Non</span></label>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q43</span>
+        <label class="q-label">Si oui, laissez votre contact :</label>
+        <input class="text-input" type="text" name="q43" placeholder="Nom / Téléphone / Instagram / Email">
+      </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-wrap">
+      <button type="button" class="btn btn-prev" id="btnPrev" onclick="navigate(-1)" style="display:none">← Retour</button>
+      <button type="button" class="btn btn-next" id="btnNext" onclick="navigate(1)">Suivant →</button>
+      <button type="button" class="btn btn-submit" id="btnSubmit" onclick="submitForm()" style="display:none">Envoyer mes réponses</button>
+    </div>
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Merci pour votre participation</h2>
+    <p>Votre réponse a été enregistrée avec succès. Elle contribuera directement à l'étude terrain du projet professionnel EMBA sur le lancement d'une marque algérienne de produits d'onglerie.</p>
+    <button class="download-btn" onclick="downloadResults()">⬇ Télécharger mes réponses (JSON)</button>
+  </div>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  const totalSections = sections.length;
+  let currentSection = 1;
+
+  const sectionNames = [
+    'Section 1 — Profil du professionnel',
+    'Section 2 — Activité et prestations',
+    'Section 3 — Produits consommés et budget',
+    'Section 4 — Marques et circuits d\'achat',
+    'Section 5 — Ruptures et problèmes qualité',
+    'Section 6 — Critères de choix d\'une marque',
+    'Section 7 — Acceptation d\'une marque algérienne',
+    'Section 8 — Prix, gamme initiale et distribution',
+    'Section 9 — Question finale et contact'
+  ];
+
+  function updateProgress() {
+    const pct = ((currentSection - 1) / totalSections) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = 'Section ' + currentSection + ' / ' + totalSections;
+    document.getElementById('currentSectionName').textContent = sectionNames[currentSection - 1];
+  }
+
+  function navigate(dir) {
+    const next = currentSection + dir;
+    if (next < 1 || next > totalSections) return;
+    document.getElementById('section-' + currentSection).classList.remove('active');
+    currentSection = next;
+    document.getElementById('section-' + currentSection).classList.add('active');
+    document.getElementById('btnPrev').style.display = currentSection > 1 ? 'inline-block' : 'none';
+    document.getElementById('btnNext').style.display = currentSection < totalSections ? 'inline-block' : 'none';
+    document.getElementById('btnSubmit').style.display = currentSection === totalSections ? 'inline-block' : 'none';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // RADIO — appelé via onclick sur le label
+  function selectRadio(el, groupId) {
+    // Deselect all in group
+    var group = document.getElementById(groupId);
+    if (!group) return;
+    group.querySelectorAll('.opt-item').forEach(function(item) {
+      item.classList.remove('selected');
+      var ind = item.querySelector('.opt-indicator');
+      if (ind) ind.className = 'opt-indicator radio';
+      var inp = item.querySelector('input[type="radio"]');
+      if (inp) inp.checked = false;
+    });
+    // Hide all "other" inputs in group
+    group.querySelectorAll('.opt-other-input').forEach(function(o) {
+      o.style.display = 'none';
+    });
+    // Select clicked
+    el.classList.add('selected');
+    var ind = el.querySelector('.opt-indicator');
+    if (ind) ind.className = 'opt-indicator radio selected-ind';
+    var inp = el.querySelector('input[type="radio"]');
+    if (inp) {
+      inp.checked = true;
+      // Show other input if "Autre"
+      if (inp.value === 'Autre') {
+        var oi = document.getElementById(groupId + '_other');
+        if (oi) oi.style.display = 'block';
+      }
+    }
+  }
+
+  // CHECKBOX — appelé via onclick sur le label
+  function selectCheck(el, groupId) {
+    var group = document.getElementById(groupId);
+    if (!group) return;
+    var maxAttr = group.getAttribute('data-max');
+    var max = maxAttr ? parseInt(maxAttr) : 999;
+    var inp = el.querySelector('input[type="checkbox"]');
+
+    if (el.classList.contains('selected')) {
+      // Deselect
+      el.classList.remove('selected');
+      var ind = el.querySelector('.opt-indicator');
+      if (ind) ind.className = 'opt-indicator check';
+      if (inp) {
+        inp.checked = false;
+        if (inp.value === 'Autre') {
+          var oi = document.getElementById(groupId + '_other');
+          if (oi) oi.style.display = 'none';
+        }
+      }
+    } else {
+      // Check max limit
+      var selectedCount = group.querySelectorAll('.opt-item.selected').length;
+      if (selectedCount >= max) {
+        el.style.borderColor = '#c0392b';
+        setTimeout(function() { el.style.borderColor = ''; }, 700);
+        return;
+      }
+      // Select
+      el.classList.add('selected');
+      var ind2 = el.querySelector('.opt-indicator');
+      if (ind2) ind2.className = 'opt-indicator check selected-ind';
+      if (inp) {
+        inp.checked = true;
+        if (inp.value === 'Autre') {
+          var oi2 = document.getElementById(groupId + '_other');
+          if (oi2) oi2.style.display = 'block';
+        }
+      }
+    }
+  }
+
+  function toggleOther(el) { /* géré dans selectRadio / selectCheck */ }
+
+  function selectScale(btn, groupId, val) {
+    document.querySelectorAll('#' + groupId + ' .scale-btn').forEach(function(b) {
+      b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
+    var hidden = document.getElementById(groupId + '_val');
+    if (hidden) hidden.value = val;
+  }
+
+  function collectData() {
+    var data = { timestamp: new Date().toISOString(), reponses: {} };
+    var form = document.getElementById('mainForm');
+
+    // Radio
+    form.querySelectorAll('input[type="radio"]:checked').forEach(function(inp) {
+      var val = inp.value;
+      if (val === 'Autre') {
+        var other = document.getElementById(inp.name + '_other');
+        if (other && other.value.trim()) val = 'Autre : ' + other.value.trim();
+      }
+      data.reponses[inp.name] = val;
+    });
+
+    // Checkbox
+    var checkGroups = {};
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach(function(inp) {
+      if (!checkGroups[inp.name]) checkGroups[inp.name] = [];
+      var val = inp.value;
+      if (val === 'Autre') {
+        var other = document.getElementById(inp.name + '_other');
+        if (other && other.value.trim()) val = 'Autre : ' + other.value.trim();
+      }
+      checkGroups[inp.name].push(val);
+    });
+    Object.assign(data.reponses, checkGroups);
+
+    // Text / textarea (exclure les champs _other déjà inclus)
+    form.querySelectorAll('input[type="text"], textarea').forEach(function(inp) {
+      if (inp.name && inp.value.trim() && inp.className !== 'opt-other-input') {
+        data.reponses[inp.name] = inp.value.trim();
+      }
+    });
+
+    // Scale hidden
+    form.querySelectorAll('input[type="hidden"]').forEach(function(inp) {
+      if (inp.id && inp.id.endsWith('_val') && inp.value) {
+        data.reponses[inp.name] = inp.value;
+      }
+    });
+
+    return data;
+  }
+
+  async function submitForm() {
+    var btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours...';
+
+    var data = collectData();
+    window._lastData = data;
+
+    var formPayload = new FormData();
+    formPayload.append('access_key', '41a6061d-ba7b-4014-9e2c-901bc8097818');
+    formPayload.append('subject', 'Nouvelle réponse — Questionnaire Onglerie Algérie');
+    formPayload.append('from_name', 'Questionnaire Onglerie EMBA');
+    formPayload.append('timestamp', data.timestamp);
+
+    Object.entries(data.reponses).forEach(function(entry) {
+      var val = Array.isArray(entry[1]) ? entry[1].join(' | ') : entry[1];
+      formPayload.append(entry[0], val);
+    });
+
+    try {
+      var response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formPayload
+      });
+      var result = await response.json();
+      if (result.success) {
+        document.getElementById('mainForm').style.display = 'none';
+        document.querySelector('.progress-wrap').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer mes réponses';
+        alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Envoyer mes réponses';
+      alert('Erreur réseau. Vérifiez votre connexion et réessayez.');
+    }
+  }
+
+  function downloadResults() {
+    var data = window._lastData || {};
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'reponse_questionnaire_onglerie.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Init
+  updateProgress();
+</script>
+</body>
+</html>
